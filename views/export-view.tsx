@@ -27,7 +27,7 @@ const FORMATS: {
     id: 'theme',
     file: 'lib/theme.ts',
     title: 'lib/theme.ts',
-    desc: '아이콘·그래프처럼 className 을 못 쓰는 곳, 네비게이션 테마, 글꼴 이름, AI 채팅 설정(CHAT_DESIGN).',
+    desc: '아이콘·그래프처럼 className 을 못 쓰는 곳, 네비게이션 테마, 글꼴 이름, AI 채팅 설정(CHAT_DESIGN), 탭·LNB 설정(NAV_DESIGN).',
     make: toThemeTs,
   },
   {

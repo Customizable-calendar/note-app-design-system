@@ -73,6 +73,9 @@ export const FONT_FAMILY = '${FONTS[s.font].family}';
 /** AI 채팅 화면 설정 — components/chat/* 에서 읽어서 씀 */
 export const CHAT_DESIGN = ${JSON.stringify(s.ai, null, 2)} as const;
 
+/** 하단 탭 · LNB 설정 — components/app/navigation.tsx, lnb.tsx 에서 읽어서 씀 */
+export const NAV_DESIGN = ${JSON.stringify(s.nav, null, 2)} as const;
+
 export const NAV_THEME: Record<'light' | 'dark', Theme> = {
   light: {
     ...DefaultTheme,

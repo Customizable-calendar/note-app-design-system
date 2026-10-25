@@ -99,7 +99,7 @@ export function ScenariosView({
         </View>
       </View>
 
-      <MainSection title="흐름" hint="휴대폰을 누르면 4번 탭에서 그 화면을 크게 볼 수 있어요">
+      <MainSection title="흐름" hint="휴대폰을 누르면 5번 탭에서 그 화면을 크게 볼 수 있어요">
         <ScrollView horizontal contentContainerClassName="gap-4 pb-2">
           {sc.steps.map((st, i) => {
             const screen = SCREENS.find((s) => s.id === st.screen);

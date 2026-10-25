@@ -1,5 +1,6 @@
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { DEFAULT_STATE, type NavDesign, type TabLayout } from '@/lib/design/tokens';
 import { cn } from '@/lib/utils';
 import {
   ChevronLeftIcon,
@@ -23,9 +24,20 @@ const TABS: { key: TabKey; label: string; icon: LucideIcon }[] = [
   { key: 'search', label: '검색', icon: SearchIcon },
 ];
 
-/** 하단 탭바. 카드 탭은 절충안에서 새로 제안된 탭 */
-export function TabBar({ active, withCards = true }: { active: TabKey; withCards?: boolean }) {
-  const tabs = withCards ? TABS : TABS.filter((t) => t.key !== 'cards');
+/** 실제 앱에서는 lib/theme.ts 의 NAV_DESIGN 을 넣는다 */
+export const NavDesignContext = React.createContext<NavDesign>(DEFAULT_STATE.nav);
+
+const LAYOUT_TABS: Record<TabLayout, TabKey[]> = {
+  original: ['home', 'sessions', 'feed', 'search'],
+  cards5: ['home', 'cards', 'sessions', 'feed', 'search'],
+  lnb4: ['home', 'cards', 'feed', 'search'],
+};
+
+/** 하단 탭바. layout 을 안 넘기면 NAV_DESIGN.tabs 를 따른다 */
+export function TabBar({ active, layout }: { active: TabKey; layout?: TabLayout }) {
+  const nav = React.useContext(NavDesignContext);
+  const keys = LAYOUT_TABS[layout ?? nav.tabs];
+  const tabs = TABS.filter((t) => keys.includes(t.key));
   return (
     <View className="h-[72px] flex-row border-t border-border bg-background">
       {tabs.map((t) => {

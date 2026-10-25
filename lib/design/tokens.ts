@@ -131,6 +131,21 @@ export type AiDesign = {
   showCost: boolean;
 };
 
+export type TabLayout = 'original' | 'cards5' | 'lnb4';
+
+export type NavDesign = {
+  /** 하단 탭: 기존 4칸(홈·세션·피드·검색) / 카드 포함 5칸 / 세션을 LNB로 옮긴 4칸(홈·카드·피드·검색) */
+  tabs: TabLayout;
+  /** LNB 여는 방법 */
+  open: 'avatar' | 'edge' | 'both';
+  /** 선택된 메뉴 표시 */
+  selected: 'soft' | 'bar';
+  density: 'regular' | 'compact';
+  showQuick: boolean;
+  showCards: boolean;
+  showUsage: boolean;
+};
+
 export type DesignState = {
   version: 1;
   mode: Mode;
@@ -142,6 +157,7 @@ export type DesignState = {
   radius: number;
   font: FontKey;
   ai: AiDesign;
+  nav: NavDesign;
   overrides: Record<Mode, Partial<Tokens>>;
 };
 
@@ -179,6 +195,15 @@ export const DEFAULT_STATE: DesignState = {
     composer: 'pill',
     showSources: true,
     showCost: true,
+  },
+  nav: {
+    tabs: 'lnb4',
+    open: 'avatar',
+    selected: 'soft',
+    density: 'regular',
+    showQuick: true,
+    showCards: true,
+    showUsage: true,
   },
   overrides: { light: {}, dark: {} },
 };

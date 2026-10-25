@@ -1,5 +1,6 @@
 import { ExtractedCard, ScheduleRow, SourceChip, TypeChip } from '@/components/app/cards';
 import { Fab, FilterChips, SegmentTabs, TabBar, TopBar } from '@/components/app/navigation';
+import { Lnb, LnbItem, LnbProfile, LnbSection, UsageMeter } from '@/components/app/lnb';
 import { BottomSheet, SlashMenu, Toast } from '@/components/app/overlays';
 import { Part } from '@/components/ds/frame';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -16,6 +17,9 @@ import { Text } from '@/components/ui/text';
 import { Textarea } from '@/components/ui/textarea';
 import { CARD_TYPES } from '@/lib/design/tokens';
 import {
+  ArchiveIcon,
+  LayoutTemplateIcon,
+  PencilLineIcon,
   CalendarIcon,
   MicIcon,
   PlusIcon,
@@ -35,6 +39,8 @@ export type ComponentSpec = {
   desc: string;
   /** 구성요소 번호가 붙는 해부도 */
   Anatomy: React.ComponentType<{ show: boolean }>;
+  /** 해부도 확대 비율 (기본 1.4, 세로로 긴 컴포넌트는 1) */
+  anatomyScale?: number;
   parts: { name: string; cls: string; note?: string }[];
   /** 종류·상태 모음 */
   Variants: React.ComponentType;
@@ -426,7 +432,7 @@ export const COMPONENTS: ComponentSpec[] = [
     name: '하단 탭바',
     source: '앱 전용',
     file: 'components/app/navigation.tsx',
-    desc: '카드 탭을 넣은 5칸 구성은 절충안 제안. 4칸(기존)과 비교해 보세요.',
+    desc: '3가지 구성을 3번 내비게이션 탭에서 바꿔 볼 수 있어요. 세션을 LNB로 옮기면 4칸으로 줄어요.',
     Anatomy: ({ show }) => (
       <Part n={1} show={show} className="w-[340px]">
         <TabBar active="cards" />
@@ -437,13 +443,102 @@ export const COMPONENTS: ComponentSpec[] = [
     ],
     Variants: () => (
       <View className="w-[340px] gap-3">
-        <Caption>기존 4칸</Caption>
-        <TabBar active="home" withCards={false} />
-        <Caption>절충안 5칸</Caption>
-        <TabBar active="home" />
+        <Caption>기존 4칸 · 홈 세션 피드 검색</Caption>
+        <TabBar active="home" layout="original" />
+        <Caption>카드 포함 5칸</Caption>
+        <TabBar active="home" layout="cards5" />
+        <Caption>세션을 LNB로 · 홈 카드 피드 검색</Caption>
+        <TabBar active="home" layout="lnb4" />
       </View>
     ),
-    code: `<TabBar active="home" withCards />`,
+    code: `<TabBar active="home" />            // NAV_DESIGN.tabs 를 따름
+<TabBar active="home" layout="lnb4" />  // original | cards5 | lnb4`,
+  },
+  {
+    id: 'lnb',
+    name: 'LNB 메뉴',
+    source: '앱 전용',
+    file: 'components/app/lnb.tsx',
+    anatomyScale: 1.1,
+    desc: '휴대폰은 왼쪽에서 밀어 여는 드로어(300px), 태블릿·웹은 고정 사이드바(260px). 메뉴 구성과 선택 표시는 3번 내비게이션 탭에서 바꿀 수 있어요.',
+    Anatomy: ({ show }) => (
+      <View className="w-[280px] rounded-xl border border-border bg-background">
+        <Part n={1} show={show}>
+          <LnbProfile />
+        </Part>
+        <Part n={2} show={show}>
+          <View className="flex-row items-center justify-between px-5 pb-1 pt-2">
+            <Text className="text-xs font-semibold text-muted-foreground">세션</Text>
+          </View>
+        </Part>
+        <View className="px-3">
+          <Part n={3} show={show}>
+            <LnbItem icon={LayoutTemplateIcon} label="업무일지" count={12} active />
+          </Part>
+          <Part n={4} show={show}>
+            <LnbItem icon={PencilLineIcon} label="빠른 입력" />
+          </Part>
+          <Part n={5} show={show}>
+            <LnbItem dot="event" label="일정" count={3} />
+          </Part>
+          <Part n={6} show={show}>
+            <LnbItem label="확인 대기" count={2} emphasis />
+          </Part>
+        </View>
+        <Part n={7} show={show}>
+          <View className="mt-2 border-t border-border">
+            <UsageMeter percent={31} />
+          </View>
+        </Part>
+      </View>
+    ),
+    parts: [
+      { name: '프로필 · 공간 전환', cls: '아바타 bg-primary-soft · 이름 15 bold · 공간 이름 xs muted' },
+      { name: '구역 제목', cls: 'text-xs font-semibold text-muted-foreground · 구역 사이 border-t' },
+      { name: '선택된 항목', cls: 'bg-primary-soft + 글자 bold (또는 왼쪽 3px 막대 bg-primary)' },
+      { name: '기본 항목', cls: 'h-11 (촘촘하게 h-9) · 아이콘 19 muted · 글자 15' },
+      { name: '카드 종류 항목', cls: '아이콘 대신 카드 4종 색 점 · 개수 xs muted' },
+      { name: '강조 개수', cls: 'bg-primary 원형 배지 — 확인 대기에만' },
+      { name: 'AI 사용량', cls: '바닥 고정 · h-1.5 · 80%↑ 서브, 100% 오류 색' },
+    ],
+    Variants: () => (
+      <View className="flex-row flex-wrap gap-6">
+        <View className="gap-2">
+          <Caption>드로어 (휴대폰)</Caption>
+          <View className="h-[560px] overflow-hidden rounded-xl border border-border">
+            <Lnb variant="drawer" />
+          </View>
+        </View>
+        <View className="gap-2">
+          <Caption>사이드바 (태블릿·웹) · 주 메뉴 포함</Caption>
+          <View className="h-[560px] overflow-hidden rounded-xl border border-border">
+            <Lnb variant="sidebar" active="home" />
+          </View>
+        </View>
+        <View className="w-[260px] gap-2">
+          <Caption>사용량 상태</Caption>
+          <View className="rounded-xl border border-border">
+            <UsageMeter percent={31} />
+            <UsageMeter percent={86} />
+            <UsageMeter percent={100} />
+          </View>
+          <Caption>기타 항목</Caption>
+          <View className="rounded-xl border border-border">
+            <LnbSection>
+              <LnbItem icon={ArchiveIcon} label="보관함 · 버린 카드" />
+            </LnbSection>
+          </View>
+        </View>
+      </View>
+    ),
+    code: `<Lnb variant="drawer" active="session:worklog" />   // 휴대폰
+<Lnb variant="sidebar" active="home" />              // 태블릿·웹
+
+<LnbSection title="세션" action={PlusIcon}>
+  <LnbItem icon={LayoutTemplateIcon} label="업무일지" count={12} active />
+  <LnbItem dot="event" label="일정" count={3} />
+  <LnbItem label="확인 대기" count={2} emphasis />
+</LnbSection>`,
   },
   {
     id: 'topbar',

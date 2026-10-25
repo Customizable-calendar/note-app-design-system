@@ -1,3 +1,4 @@
+import { NavDesignContext } from '@/components/app/navigation';
 import { ChatDesignContext } from '@/components/chat/chat';
 import { FontContext } from '@/lib/font';
 import { useDesign } from '@/lib/design/store';
@@ -24,11 +25,13 @@ export function ThemeScope({
   );
   return (
     <ScopeModeContext.Provider value={m}>
-      <ChatDesignContext.Provider value={state.ai}>
-        <FontContext.Provider value={FONTS[state.font].family}>
-          <View style={[themeVars, style]} className={cn('bg-background', className)} {...props} />
-        </FontContext.Provider>
-      </ChatDesignContext.Provider>
+      <NavDesignContext.Provider value={state.nav}>
+        <ChatDesignContext.Provider value={state.ai}>
+          <FontContext.Provider value={FONTS[state.font].family}>
+            <View style={[themeVars, style]} className={cn('bg-background', className)} {...props} />
+          </FontContext.Provider>
+        </ChatDesignContext.Provider>
+      </NavDesignContext.Provider>
     </ScopeModeContext.Provider>
   );
 }

@@ -79,7 +79,7 @@ export function ComponentsView({
         <View className="flex-row flex-wrap gap-6">
           <ThemeScope className="min-h-[260px] min-w-[480px] flex-1 items-center justify-center rounded-2xl border border-slate-200 p-16">
             {/* 구성요소가 잘 보이도록 1.4배 확대 */}
-            <View style={{ transform: [{ scale: 1.4 }] }}>
+            <View style={{ transform: [{ scale: spec.anatomyScale ?? 1.4 }] }}>
               <spec.Anatomy show={anatomy} />
             </View>
           </ThemeScope>

@@ -36,7 +36,7 @@ export function ThemePanel() {
           {PRESETS.map((p) => (
             <Pressable
               key={p.name}
-              onPress={() => set({ ...DEFAULT_STATE, ...p.patch, mode: state.mode, ai: state.ai, overrides: { light: {}, dark: {} } })}
+              onPress={() => set({ ...DEFAULT_STATE, ...p.patch, mode: state.mode, ai: state.ai, nav: state.nav, overrides: { light: {}, dark: {} } })}
               className="flex-row items-center gap-2 rounded-lg border border-slate-200 bg-white px-2.5 py-2">
               <View className="flex-row">
                 <View className="h-4 w-4 rounded-full" style={{ backgroundColor: p.patch.primary ?? DEFAULT_STATE.primary }} />

@@ -6,13 +6,16 @@ import {
   RecordScreen,
   SettingsScreen,
 } from '@/screens/flows';
+import { DrawerScreen, TabletHomeScreen } from '@/screens/navigation';
 import { CardsScreen, FeedScreen, HomeScreen, SearchScreen, SessionsScreen } from '@/screens/tabs';
 import type * as React from 'react';
 
 export type ScreenSpec = {
   id: string;
   name: string;
-  group: '기존 목업' | '절충안 (새 화면)';
+  group: '기존 목업' | '절충안 (새 화면)' | 'LNB · 내비게이션';
+  /** 기본은 휴대폰 틀 */
+  frame?: 'phone' | 'tablet';
   Component: React.ComponentType;
   /** 회의에서 같이 볼 디자인 포인트 */
   checks: { title: string; detail: string }[];
@@ -157,6 +160,33 @@ export const SCREENS: ScreenSpec[] = [
       { title: '켜짐 상태 색', detail: '라디오·스위치가 메인 색으로 통일되는지 (직접 눌러 보세요)' },
       { title: '보안 안내', detail: 'API 키 안내 문구가 잘 보이는지' },
       { title: '사용량 바', detail: '진행 바 색과 두께' },
+    ],
+  },
+  {
+    id: 'drawer',
+    name: 'LNB 드로어 (휴대폰)',
+    group: 'LNB · 내비게이션',
+    Component: DrawerScreen,
+    uses: ['lnb', 'tabbar'],
+    checks: [
+      { title: '여는 방법', detail: '홈 왼쪽 위 프로필 아이콘이 메뉴 버튼으로 읽히는지, 왼쪽 끝 밀기만으로 충분한지' },
+      { title: '선택 상태', detail: '연한 면 / 왼쪽 막대 중 무엇이 탭바 선택 표시와 어울리는지' },
+      { title: '구역 나눔', detail: '빠른 실행 · 세션 · 카드 · 기타가 구분선과 작은 제목만으로 구분되는지' },
+      { title: '숫자 배지', detail: '개수는 회색, 확인 대기만 메인 색 배지 — 너무 많은 배지가 눈을 끌지 않는지' },
+      { title: '탭바와 중복', detail: '세션이 LNB와 하단 탭에 동시에 있지 않은지 (3번 탭에서 구성 전환)' },
+    ],
+  },
+  {
+    id: 'tablet',
+    name: 'LNB 고정 (태블릿·웹)',
+    group: 'LNB · 내비게이션',
+    frame: 'tablet',
+    Component: TabletHomeScreen,
+    uses: ['lnb', 'schedule', 'extracted'],
+    checks: [
+      { title: '주 메뉴 위치', detail: '하단 탭바 대신 LNB 맨 위에 홈 · 오늘 카드 · 피드 · 검색이 오는 구성' },
+      { title: 'LNB 너비', detail: '260px 고정 — 본문 2단이 답답하지 않은지' },
+      { title: '상단 바', detail: '검색과 초안 만들기를 상단 바로 올린 배치' },
     ],
   },
 ];

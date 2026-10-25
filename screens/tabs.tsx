@@ -1,5 +1,5 @@
 import { ExtractedCard, ScheduleRow, SectionLabel, TypeChip } from '@/components/app/cards';
-import { Fab, FilterChips, SegmentTabs, TabBar } from '@/components/app/navigation';
+import { Fab, FilterChips, NavDesignContext, SegmentTabs, TabBar } from '@/components/app/navigation';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
@@ -24,11 +24,17 @@ import Svg, { Circle, Line, Rect } from 'react-native-svg';
 import { useCssColor } from '@/screens/shared';
 
 export function HomeScreen() {
+  const nav = React.useContext(NavDesignContext);
   return (
     <View className="flex-1">
       <ScrollView contentContainerClassName="gap-5 px-5 pb-28 pt-8">
         <View className="flex-row items-start justify-between">
           <View>
+            {nav.open !== 'edge' ? (
+              <View className="mb-2 h-9 w-9 items-center justify-center rounded-full bg-primary-soft">
+                <Text className="text-sm font-bold text-primary-soft-foreground">서</Text>
+              </View>
+            ) : null}
             <Text className="text-sm text-muted-foreground">토요일</Text>
             <Text className="text-[28px] font-bold tracking-tight text-foreground">10월 24일</Text>
           </View>

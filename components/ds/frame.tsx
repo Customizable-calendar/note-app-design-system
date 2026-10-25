@@ -32,6 +32,39 @@ export function Phone({
   );
 }
 
+export const TABLET_W = 1024;
+export const TABLET_H = 700;
+
+/** 태블릿·웹 너비 미리보기. 화면이 넓지 않으면 줄여서 보여준다. */
+export function Tablet({
+  mode,
+  label,
+  scale = 0.78,
+  children,
+}: {
+  mode?: Mode;
+  label?: string;
+  scale?: number;
+  children: React.ReactNode;
+}) {
+  const w = TABLET_W + 16;
+  const h = TABLET_H + 16;
+  return (
+    <View className="gap-2">
+      {label ? <Text className="text-xs font-semibold text-slate-500">{label}</Text> : null}
+      <View style={{ width: w * scale, height: h * scale }}>
+        <View
+          className="absolute left-0 top-0 overflow-hidden rounded-[28px] border-[8px] border-slate-900 bg-slate-900 shadow-xl"
+          style={{ width: w, height: h, transform: [{ scale }], transformOrigin: 'top left' }}>
+          <ThemeScope mode={mode} className="flex-1 overflow-hidden rounded-[20px]">
+            {children}
+          </ThemeScope>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 /** 구성요소 번호 표시: 켜면 점선 테두리 + 번호 배지 */
 export function Part({
   n,

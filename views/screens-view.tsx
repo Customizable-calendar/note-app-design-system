@@ -1,6 +1,6 @@
 import { COMPONENTS } from '@/catalog/components';
 import { PanelSection } from '@/components/ds/controls';
-import { Phone } from '@/components/ds/frame';
+import { Phone, Tablet } from '@/components/ds/frame';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { SCREENS } from '@/screens/registry';
@@ -47,7 +47,7 @@ export function ScreensView({
 
   const panel = (
     <>
-      {(['기존 목업', '절충안 (새 화면)'] as const).map((g) => (
+      {(['기존 목업', '절충안 (새 화면)', 'LNB · 내비게이션'] as const).map((g) => (
         <PanelSection key={g} title={g}>
           <View className="gap-1">
             {SCREENS.filter((s) => s.group === g).map((s) => {
@@ -102,14 +102,25 @@ export function ScreensView({
   return (
     <Workspace panel={panel}>
       <MainSection title={screen.name} hint={`${screen.group} · 라이트와 다크를 같이 확인`}>
-        <View className="flex-row flex-wrap gap-8">
-          <Phone mode="light" label="라이트">
-            <screen.Component />
-          </Phone>
-          <Phone mode="dark" label="다크">
-            <screen.Component />
-          </Phone>
-        </View>
+        {screen.frame === 'tablet' ? (
+          <View className="gap-6">
+            <Tablet mode="light" label="라이트">
+              <screen.Component />
+            </Tablet>
+            <Tablet mode="dark" label="다크">
+              <screen.Component />
+            </Tablet>
+          </View>
+        ) : (
+          <View className="flex-row flex-wrap gap-8">
+            <Phone mode="light" label="라이트">
+              <screen.Component />
+            </Phone>
+            <Phone mode="dark" label="다크">
+              <screen.Component />
+            </Phone>
+          </View>
+        )}
       </MainSection>
       <MainSection title="확인 포인트">
         <View className="flex-row flex-wrap gap-3">
