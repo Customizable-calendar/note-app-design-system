@@ -46,13 +46,13 @@ export default function DesignSystemPage() {
 
   return (
     <FontContext.Provider value="Pretendard">
-      <Stack.Screen options={{ headerShown: false, title: '노트 앱 디자인 시스템' }} />
+      <Stack.Screen options={{ headerShown: false, title: 'noteApp(가안) 디자인 시스템' }} />
       <View className="flex-1 bg-white">
         <View className="flex-row flex-wrap items-center gap-x-6 gap-y-3 border-b border-slate-200 px-6 py-3.5">
           <View className="gap-0.5">
-            <Text className="text-[17px] font-bold text-slate-900">노트 앱 디자인 시스템</Text>
+            <Text className="text-[17px] font-bold text-slate-900">noteApp(가안) 디자인 시스템</Text>
             <Text className="text-xs text-slate-500">
-              오르카짱 회의용 · 확정안 아님 · Expo + NativeWind + react-native-reusables
+              회의용 · 확정안 아님 · Expo + NativeWind + react-native-reusables
             </Text>
           </View>
           <View className="flex-1" />

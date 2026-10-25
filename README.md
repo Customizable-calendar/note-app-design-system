@@ -1,6 +1,6 @@
 # note-app-design-system
 
-노트 앱(가안)의 디자인 시스템을 **회의 중에 직접 바꿔 보며 정하고**, 정한 값을 **앱 코드로 바로 옮기기** 위한 페이지입니다.
+noteApp(가안)의 디자인 시스템을 **회의 중에 직접 바꿔 보며 정하고**, 정한 값을 **앱 코드로 바로 옮기기** 위한 페이지입니다.
 확정안이 아니며 언제든 바뀔 수 있어요.
 
 - 앱과 같은 스택: Expo (React Native) + NativeWind v4 + [react-native-reusables](https://github.com/founded-labs/react-native-reusables) (MIT)
