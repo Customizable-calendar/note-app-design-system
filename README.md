@@ -6,6 +6,9 @@
 - 앱과 같은 스택: Expo (React Native) + NativeWind v4 + [react-native-reusables](https://github.com/founded-labs/react-native-reusables) (MIT)
 - 웹 브라우저에서 열어 쓰지만, 컴포넌트는 그대로 앱에서 동작하는 React Native 코드입니다.
 
+**배포 주소:** https://customizable-calendar.github.io/note-app-design-system/
+(main 에 push 하면 GitHub Actions 가 자동으로 다시 배포해요)
+
 ## 실행
 
 ```bash
@@ -23,10 +26,11 @@ npm run web        # http://localhost:8090
 | 2. 컴포넌트 | 컴포넌트별 구성요소 번호 표시, 각 부분이 쓰는 토큰, 종류·상태, 쓰이는 화면, 코드 |
 | 3. AI 채팅 | AI 강조색, 말풍선 색·모양, 아바타, 채팅 속 카드, 생각 중·오류·첫 화면 상태, 입력창 |
 | 4. 화면별 확인 | 목업 11개 화면을 라이트/다크로 나란히, 화면마다 확인할 디자인 요소 체크리스트 |
-| 5. 코드 내보내기 | `global.css`, `lib/theme.ts`, `tailwind.config.js`, HeroUI Native 매핑, `design-tokens.json` |
+| 5. 사용 시나리오 | 낮 메모 → 카드, 밤 초안, 회의 녹음, AI에게 묻기, 처음 설정 — 단계별 화면과 디자인 확인 포인트 |
+| 6. 코드 내보내기 | `global.css`, `lib/theme.ts`, `tailwind.config.js`, HeroUI Native 매핑, `design-tokens.json` |
 
 - 오른쪽 위 **이 설정 링크 복사**: 지금 설정이 URL에 담겨서 팀원이 같은 화면으로 열 수 있어요.
-- `?tab=components&c=extracted`, `?tab=screens&screen=capture` 처럼 탭·컴포넌트·화면을 링크로 바로 열 수 있어요.
+- `?tab=components&c=extracted`, `?tab=screens&screen=capture`, `?tab=scenarios&sc=draft` 처럼 탭·컴포넌트·화면을 링크로 바로 열 수 있어요.
 - 바꾼 값과 체크리스트는 그 브라우저에만 저장됩니다 (localStorage).
 
 ## 폴더
@@ -38,7 +42,7 @@ components/app/      앱 전용 컴포넌트: 카드 칩, AI 추출 카드, 탭�
 components/chat/     AI 채팅 컴포넌트
 components/ds/       이 페이지 전용 (편집 패널, 휴대폰 틀, 구성요소 표시)
 screens/             목업 화면 재현 + 화면별 확인 포인트
-catalog/             컴포넌트 설명·구성요소·코드 예시
+catalog/             컴포넌트 설명·구성요소·코드 예시, 사용 시나리오
 views/               탭별 화면
 lib/design/          토큰 계산(tokens.ts), 색 계산(color.ts), 내보내기(export.ts), 상태 저장(store.tsx)
 design/              tailwind 색 이름 설정 (tailwind.config.js 와 내보내기가 같이 씀)
@@ -49,7 +53,7 @@ design/              tailwind 색 이름 설정 (tailwind.config.js 와 내보�
 `components/ui`, `components/app`, `components/chat`, `lib/font.ts`는 앱으로 그대로 옮길 코드입니다.
 `components/ds`, `views`, `catalog`, `lib/design/store.tsx`는 이 페이지에서만 씁니다.
 
-1. 5번 탭에서 `global.css`, `lib/theme.ts` 복사
+1. 6번 탭에서 `global.css`, `lib/theme.ts` 복사
 2. `tailwind.config.js`의 colors · borderRadius 맞추기 (처음 한 번)
 3. 위 컴포넌트 폴더 복사
 4. `design-tokens.json`을 docs에 커밋 (나중에 이 페이지에서 다시 불러와 이어서 수정)

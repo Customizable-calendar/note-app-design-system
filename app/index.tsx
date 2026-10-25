@@ -7,26 +7,28 @@ import { cn } from '@/lib/utils';
 import { ChatView } from '@/views/chat-view';
 import { ComponentsView } from '@/views/components-view';
 import { ExportView } from '@/views/export-view';
+import { ScenariosView } from '@/views/scenarios-view';
 import { ScreensView } from '@/views/screens-view';
 import { ThemeView } from '@/views/theme-view';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-type Tab = 'theme' | 'components' | 'chat' | 'screens' | 'export';
+type Tab = 'theme' | 'components' | 'chat' | 'screens' | 'scenarios' | 'export';
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'theme', label: '1. 테마 색' },
   { key: 'components', label: '2. 컴포넌트' },
   { key: 'chat', label: '3. AI 채팅' },
   { key: 'screens', label: '4. 화면별 확인' },
-  { key: 'export', label: '5. 코드 내보내기' },
+  { key: 'scenarios', label: '5. 사용 시나리오' },
+  { key: 'export', label: '6. 코드 내보내기' },
 ];
 
 export default function DesignSystemPage() {
   const { state, set, reset, shareUrl } = useDesign();
   // ?tab=chat 처럼 링크로 특정 탭을 바로 열 수 있게
-  const params = useLocalSearchParams<{ tab?: string; c?: string; screen?: string }>();
+  const params = useLocalSearchParams<{ tab?: string; c?: string; screen?: string; sc?: string }>();
   const tab: Tab = TABS.some((t) => t.key === params.tab) ? (params.tab as Tab) : 'theme';
   const setTab = (t: Tab) => router.setParams({ tab: t });
   const componentId = params.c ?? 'button';
@@ -108,6 +110,13 @@ export default function DesignSystemPage() {
               selected={screenId}
               onSelect={setScreenId}
               onOpenComponent={(id) => router.setParams({ tab: 'components', c: id })}
+            />
+          ) : null}
+          {tab === 'scenarios' ? (
+            <ScenariosView
+              selected={params.sc ?? 'capture'}
+              onSelect={(sc) => router.setParams({ sc })}
+              onOpenScreen={(id) => router.setParams({ tab: 'screens', screen: id })}
             />
           ) : null}
           {tab === 'export' ? <ExportView /> : null}
