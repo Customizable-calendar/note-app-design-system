@@ -1,6 +1,14 @@
 import * as React from 'react';
 import { Platform } from 'react-native';
-import { DEFAULT_STATE, type AiDesign, type DesignState, type Mode, type NavDesign, type TokenKey } from './tokens';
+import {
+  DEFAULT_STATE,
+  type AiDesign,
+  type CalendarDesign,
+  type DesignState,
+  type Mode,
+  type NavDesign,
+  type TokenKey,
+} from './tokens';
 
 const STORAGE_KEY = 'note-app-design-system:v1';
 
@@ -9,6 +17,7 @@ type Store = {
   set: (patch: Partial<DesignState>) => void;
   setAi: (patch: Partial<AiDesign>) => void;
   setNav: (patch: Partial<NavDesign>) => void;
+  setCalendar: (patch: Partial<CalendarDesign>) => void;
   setOverride: (mode: Mode, key: TokenKey, hex: string | null) => void;
   reset: () => void;
   shareUrl: () => string | null;
@@ -37,6 +46,7 @@ function merge(parsed: Partial<DesignState>): DesignState {
     cardColors: { ...DEFAULT_STATE.cardColors, ...parsed.cardColors },
     ai: { ...DEFAULT_STATE.ai, ...parsed.ai },
     nav: { ...DEFAULT_STATE.nav, ...parsed.nav },
+    calendar: { ...DEFAULT_STATE.calendar, ...parsed.calendar },
     overrides: {
       light: { ...parsed.overrides?.light },
       dark: { ...parsed.overrides?.dark },
@@ -86,6 +96,7 @@ export function DesignProvider({ children }: { children: React.ReactNode }) {
       set: (patch) => setState((s) => ({ ...s, ...patch })),
       setAi: (patch) => setState((s) => ({ ...s, ai: { ...s.ai, ...patch } })),
       setNav: (patch) => setState((s) => ({ ...s, nav: { ...s.nav, ...patch } })),
+      setCalendar: (patch) => setState((s) => ({ ...s, calendar: { ...s.calendar, ...patch } })),
       setOverride: (mode, key, hex) =>
         setState((s) => {
           const next = { ...s.overrides[mode] };

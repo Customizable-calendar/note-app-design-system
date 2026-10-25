@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 import {
   AlignLeftIcon,
   ArchiveIcon,
+  CalendarDaysIcon,
   ChevronsUpDownIcon,
   FileTextIcon,
   FolderIcon,
@@ -28,6 +29,7 @@ import { ScrollView, View } from 'react-native';
 
 export type LnbKey =
   | 'home'
+  | 'calendar'
   | 'cards'
   | 'feed'
   | 'search'
@@ -200,6 +202,7 @@ export function Lnb({
           <LnbSection>
             <LnbItem icon={HomeIcon} label="홈" active={active === 'home'} />
             <LnbItem icon={LayersIcon} label="오늘 카드" active={active === 'cards'} />
+            <LnbItem icon={CalendarDaysIcon} label="캘린더" active={active === 'calendar'} />
             <LnbItem icon={UsersIcon} label="피드" active={active === 'feed'} />
             <LnbItem icon={SearchIcon} label="검색" active={active === 'search'} />
           </LnbSection>
@@ -209,6 +212,9 @@ export function Lnb({
             <LnbItem icon={PencilLineIcon} label="빠른 입력" active={active === 'capture'} />
             <LnbItem icon={MicIcon} label="녹음" active={active === 'record'} />
             <LnbItem icon={SparklesIcon} label="AI에게 묻기" ai active={active === 'ask'} />
+            {variant === 'drawer' && nav.tabs !== 'calendar' ? (
+              <LnbItem icon={CalendarDaysIcon} label="캘린더" active={active === 'calendar'} />
+            ) : null}
           </LnbSection>
         ) : null}
         {showSessions ? (

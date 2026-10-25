@@ -3,6 +3,7 @@ import { Text } from '@/components/ui/text';
 import { DEFAULT_STATE, type NavDesign, type TabLayout } from '@/lib/design/tokens';
 import { cn } from '@/lib/utils';
 import {
+  CalendarDaysIcon,
   ChevronLeftIcon,
   FolderIcon,
   HomeIcon,
@@ -14,11 +15,12 @@ import {
 import * as React from 'react';
 import { Pressable, View } from 'react-native';
 
-export type TabKey = 'home' | 'cards' | 'sessions' | 'feed' | 'search';
+export type TabKey = 'home' | 'cards' | 'calendar' | 'sessions' | 'feed' | 'search';
 
 const TABS: { key: TabKey; label: string; icon: LucideIcon }[] = [
   { key: 'home', label: '홈', icon: HomeIcon },
   { key: 'cards', label: '카드', icon: LayersIcon },
+  { key: 'calendar', label: '캘린더', icon: CalendarDaysIcon },
   { key: 'sessions', label: '세션', icon: FolderIcon },
   { key: 'feed', label: '피드', icon: UsersIcon },
   { key: 'search', label: '검색', icon: SearchIcon },
@@ -31,12 +33,15 @@ const LAYOUT_TABS: Record<TabLayout, TabKey[]> = {
   original: ['home', 'sessions', 'feed', 'search'],
   cards5: ['home', 'cards', 'sessions', 'feed', 'search'],
   lnb4: ['home', 'cards', 'feed', 'search'],
+  calendar: ['home', 'cards', 'calendar', 'feed', 'search'],
 };
 
-/** 하단 탭바. layout 을 안 넘기면 NAV_DESIGN.tabs 를 따른다 */
+/** 하단 탭바. layout 을 안 넘기면 NAV_DESIGN.tabs 를 따른다.
+ * 고른 구성에 캘린더 탭이 없을 때 캘린더 화면에서는 캘린더 포함 5칸으로 보여준다. */
 export function TabBar({ active, layout }: { active: TabKey; layout?: TabLayout }) {
   const nav = React.useContext(NavDesignContext);
-  const keys = LAYOUT_TABS[layout ?? nav.tabs];
+  const chosen = layout ?? nav.tabs;
+  const keys = LAYOUT_TABS[chosen].includes(active) ? LAYOUT_TABS[chosen] : LAYOUT_TABS.calendar;
   const tabs = TABS.filter((t) => keys.includes(t.key));
   return (
     <View className="h-[72px] flex-row border-t border-border bg-background">

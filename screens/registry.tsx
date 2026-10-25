@@ -6,6 +6,7 @@ import {
   RecordScreen,
   SettingsScreen,
 } from '@/screens/flows';
+import { CalendarScreen, CheckInScreen, ReviewScreen, SlotScreen } from '@/screens/calendar';
 import { DrawerScreen, TabletHomeScreen } from '@/screens/navigation';
 import { CardsScreen, FeedScreen, HomeScreen, SearchScreen, SessionsScreen } from '@/screens/tabs';
 import type * as React from 'react';
@@ -13,7 +14,7 @@ import type * as React from 'react';
 export type ScreenSpec = {
   id: string;
   name: string;
-  group: '기존 목업' | '절충안 (새 화면)' | 'LNB · 내비게이션';
+  group: '기존 목업' | '절충안 (새 화면)' | '캘린더 (새 화면)' | 'LNB · 내비게이션';
   /** 기본은 휴대폰 틀 */
   frame?: 'phone' | 'tablet';
   Component: React.ComponentType;
@@ -160,6 +161,59 @@ export const SCREENS: ScreenSpec[] = [
       { title: '켜짐 상태 색', detail: '라디오·스위치가 메인 색으로 통일되는지 (직접 눌러 보세요)' },
       { title: '보안 안내', detail: 'API 키 안내 문구가 잘 보이는지' },
       { title: '사용량 바', detail: '진행 바 색과 두께' },
+    ],
+  },
+  {
+    id: 'calendar',
+    name: '캘린더',
+    group: '캘린더 (새 화면)',
+    Component: CalendarScreen,
+    uses: ['cal-event', 'cal-sync', 'segment', 'tabbar'],
+    checks: [
+      { title: '계정 색 2개', detail: '회사 · 개인 계정 색이 서로, 그리고 카드 4종 색과 헷갈리지 않는지 (4번 탭에서 바꿔 보기)' },
+      { title: '후보 일정', detail: '아직 저장 안 된 AI 후보가 실제 일정과 확실히 달라 보이는지 (점선 / 연한 면)' },
+      { title: '동기화 상태', detail: '재로그인 안내가 눈에 띄되 일정보다 시끄럽지 않은지' },
+      { title: '일 · 주 · 목록', detail: '세 보기를 눌러 보며 어떤 보기를 기본으로 할지' },
+      { title: '계정 숨기기', detail: '계정 칩을 눌러 끄면 그 계정 일정이 사라지는지, 꺼진 칩 모양이 분명한지' },
+    ],
+  },
+  {
+    id: 'slot',
+    name: '시간 잡기',
+    group: '캘린더 (새 화면)',
+    Component: SlotScreen,
+    uses: ['cal-slot', 'extracted', 'button'],
+    checks: [
+      { title: '후보 3개', detail: '고른 후보(두꺼운 테두리)와 나머지가 바로 구분되는지 (눌러 보세요)' },
+      { title: '잘 맞는 정도', detail: '글자(잘 맞음) / 점수(적합 86) / 표시 없음 중 무엇이 믿을 만해 보이는지' },
+      { title: '이유 문장', detail: '"지난 4주 8번 중 6번 완료"처럼 근거가 너무 길지 않은지' },
+      { title: '저장할 캘린더', detail: '어느 계정에 저장되는지 저장 버튼 전에 보이는지' },
+    ],
+  },
+  {
+    id: 'checkin',
+    name: '수행 확인 시트',
+    group: '캘린더 (새 화면)',
+    Component: CheckInScreen,
+    uses: ['cal-status', 'sheet', 'button'],
+    checks: [
+      { title: '4가지 버튼', detail: '완료 · 부분 · 못 함 · 모름이 한눈에 구분되는지. 못 함이 오류(빨강)처럼 보이지 않는지' },
+      { title: '한 번 더 묻기', detail: '부분 · 못 함을 고르면 나오는 칩이 부담스럽지 않은지 (눌러 보세요)' },
+      { title: '시트 높이', detail: '항목 4개 + 버튼이 화면을 너무 많이 덮지 않는지' },
+      { title: '빈도 안내', detail: '"하루 최대 2번"이 보여서 귀찮지 않다는 게 전해지는지' },
+    ],
+  },
+  {
+    id: 'review',
+    name: '주간 회고',
+    group: '캘린더 (새 화면)',
+    Component: ReviewScreen,
+    uses: ['cal-status', 'extracted', 'progress'],
+    checks: [
+      { title: '숫자 두 개', detail: '계획 시간 vs 실제 시간이 먼저 눈에 들어오는지' },
+      { title: '비율 막대', detail: '완료 · 부분 · 못 함 색이 수행 확인 버튼 색과 같은 규칙인지' },
+      { title: '다음 주 제안', detail: 'AI 제안이 빠른 입력의 제안 카드와 같은 모양(점선)인지' },
+      { title: '기록이 적을 때', detail: '"아직 참고용" 안내가 결과를 너무 믿지 않게 해 주는지' },
     ],
   },
   {

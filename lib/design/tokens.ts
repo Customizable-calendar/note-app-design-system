@@ -58,6 +58,10 @@ export const TOKEN_GROUPS = [
       'bubble-ai-border',
     ],
   },
+  {
+    title: '캘린더: 연결한 계정 색',
+    keys: ['cal-1', 'cal-1-soft', 'cal-2', 'cal-2-soft'],
+  },
 ] as const;
 
 export type TokenKey = (typeof TOKEN_GROUPS)[number]['keys'][number];
@@ -103,6 +107,10 @@ export const TOKEN_LABEL: Partial<Record<TokenKey, string>> = {
   'bubble-ai': 'AI 말풍선',
   'bubble-ai-foreground': 'AI 말풍선 글자',
   'bubble-ai-border': 'AI 말풍선 테두리',
+  'cal-1': '계정 1 색 (예: 회사)',
+  'cal-1-soft': '계정 1 일정 면',
+  'cal-2': '계정 2 색 (예: 개인)',
+  'cal-2-soft': '계정 2 일정 면',
 };
 
 export type CardType = 'event' | 'task' | 'person' | 'idea';
@@ -131,10 +139,10 @@ export type AiDesign = {
   showCost: boolean;
 };
 
-export type TabLayout = 'original' | 'cards5' | 'lnb4';
+export type TabLayout = 'original' | 'cards5' | 'lnb4' | 'calendar';
 
 export type NavDesign = {
-  /** 하단 탭: 기존 4칸(홈·세션·피드·검색) / 카드 포함 5칸 / 세션을 LNB로 옮긴 4칸(홈·카드·피드·검색) */
+  /** 하단 탭: 기존 4칸(홈·세션·피드·검색) / 카드 포함 5칸 / 세션을 LNB로 옮긴 4칸(홈·카드·피드·검색) / 캘린더 포함 5칸 */
   tabs: TabLayout;
   /** LNB 여는 방법 */
   open: 'avatar' | 'edge' | 'both';
@@ -144,6 +152,23 @@ export type NavDesign = {
   showQuick: boolean;
   showCards: boolean;
   showUsage: boolean;
+};
+
+export type CalendarDesign = {
+  /** 연결한 캘린더 계정 2개의 색 (실제 앱에서는 계정마다 고름) */
+  accounts: [string, string];
+  /** 일정 블록: 왼쪽 막대 + 연한 면 / 진한 면 채움 */
+  eventStyle: 'bar' | 'fill';
+  /** 아직 저장 안 된 AI 후보 일정 */
+  suggestion: 'dashed' | 'soft';
+  /** 시간 후보의 잘 맞는 정도 표시 */
+  fitLabel: 'word' | 'score' | 'none';
+  /** 후보마다 이유 문장 보이기 */
+  showReasons: boolean;
+  /** 1시간 높이 */
+  density: 'regular' | 'compact';
+  /** 수행 확인 버튼 */
+  statusStyle: 'segment' | 'chip';
 };
 
 export type DesignState = {
@@ -158,6 +183,7 @@ export type DesignState = {
   font: FontKey;
   ai: AiDesign;
   nav: NavDesign;
+  calendar: CalendarDesign;
   overrides: Record<Mode, Partial<Tokens>>;
 };
 
@@ -204,6 +230,15 @@ export const DEFAULT_STATE: DesignState = {
     showQuick: true,
     showCards: true,
     showUsage: true,
+  },
+  calendar: {
+    accounts: ['#245ab8', '#a3366b'],
+    eventStyle: 'bar',
+    suggestion: 'dashed',
+    fitLabel: 'word',
+    showReasons: true,
+    density: 'regular',
+    statusStyle: 'segment',
   },
   overrides: { light: {}, dark: {} },
 };
@@ -358,6 +393,10 @@ export function buildTokens(s: DesignState, mode: Mode): Tokens {
     'bubble-ai': aiBubble,
     'bubble-ai-foreground': n.fg,
     'bubble-ai-border': s.ai.aiBubble === 'outline' ? n.border : aiBubble,
+    'cal-1': typeText(s.calendar.accounts[0]),
+    'cal-1-soft': typeSoft(s.calendar.accounts[0]),
+    'cal-2': typeText(s.calendar.accounts[1]),
+    'cal-2-soft': typeSoft(s.calendar.accounts[1]),
   };
   return { ...t, ...s.overrides[mode] };
 }

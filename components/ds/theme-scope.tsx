@@ -1,3 +1,4 @@
+import { CalendarDesignContext } from '@/components/app/calendar';
 import { NavDesignContext } from '@/components/app/navigation';
 import { ChatDesignContext } from '@/components/chat/chat';
 import { FontContext } from '@/lib/font';
@@ -27,9 +28,11 @@ export function ThemeScope({
     <ScopeModeContext.Provider value={m}>
       <NavDesignContext.Provider value={state.nav}>
         <ChatDesignContext.Provider value={state.ai}>
-          <FontContext.Provider value={FONTS[state.font].family}>
-            <View style={[themeVars, style]} className={cn('bg-background', className)} {...props} />
-          </FontContext.Provider>
+          <CalendarDesignContext.Provider value={state.calendar}>
+            <FontContext.Provider value={FONTS[state.font].family}>
+              <View style={[themeVars, style]} className={cn('bg-background', className)} {...props} />
+            </FontContext.Provider>
+          </CalendarDesignContext.Provider>
         </ChatDesignContext.Provider>
       </NavDesignContext.Provider>
     </ScopeModeContext.Provider>

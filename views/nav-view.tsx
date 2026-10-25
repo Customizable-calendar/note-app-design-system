@@ -34,6 +34,13 @@ const LAYOUTS: { value: TabLayout; label: string; tabs: string; good: string; ba
     good: '하단은 매일 쓰는 4개만. 세션 목록은 LNB에서 길게 관리',
     bad: '세션으로 가려면 한 번 더 눌러야 함',
   },
+  {
+    value: 'calendar',
+    label: '캘린더 포함 5칸',
+    tabs: '홈 · 카드 · 캘린더 · 피드 · 검색',
+    good: '캘린더 아이디어를 넣으면 매일 보는 화면이 하나 늘어남. 세션은 LNB로',
+    bad: '5칸이라 한 칸이 좁음. 검색을 상단 아이콘으로 올리는 안과 비교 필요',
+  },
 ];
 
 function NavPanel() {

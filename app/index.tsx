@@ -4,6 +4,7 @@ import { Text } from '@/components/ui/text';
 import { FontContext } from '@/lib/font';
 import { useDesign } from '@/lib/design/store';
 import { cn } from '@/lib/utils';
+import { CalendarView } from '@/views/calendar-view';
 import { ChatView } from '@/views/chat-view';
 import { ComponentsView } from '@/views/components-view';
 import { ExportView } from '@/views/export-view';
@@ -15,16 +16,17 @@ import { Stack, router, useLocalSearchParams } from 'expo-router';
 import * as React from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 
-type Tab = 'theme' | 'components' | 'nav' | 'chat' | 'screens' | 'scenarios' | 'export';
+type Tab = 'theme' | 'components' | 'nav' | 'calendar' | 'chat' | 'screens' | 'scenarios' | 'export';
 
 const TABS: { key: Tab; label: string }[] = [
   { key: 'theme', label: '1. 테마 색' },
   { key: 'components', label: '2. 컴포넌트' },
   { key: 'nav', label: '3. 내비게이션 · LNB' },
-  { key: 'chat', label: '4. AI 채팅' },
-  { key: 'screens', label: '5. 화면별 확인' },
-  { key: 'scenarios', label: '6. 사용 시나리오' },
-  { key: 'export', label: '7. 코드 내보내기' },
+  { key: 'calendar', label: '4. 캘린더' },
+  { key: 'chat', label: '5. AI 채팅' },
+  { key: 'screens', label: '6. 화면별 확인' },
+  { key: 'scenarios', label: '7. 사용 시나리오' },
+  { key: 'export', label: '8. 코드 내보내기' },
 ];
 
 export default function DesignSystemPage() {
@@ -107,6 +109,7 @@ export default function DesignSystemPage() {
             />
           ) : null}
           {tab === 'nav' ? <NavView /> : null}
+          {tab === 'calendar' ? <CalendarView /> : null}
           {tab === 'chat' ? <ChatView /> : null}
           {tab === 'screens' ? (
             <ScreensView

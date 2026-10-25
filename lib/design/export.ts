@@ -42,7 +42,7 @@ ${cssBlock(dark, '    ')}
 }
 
 function camel(k: string) {
-  return k.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
+  return k.replace(/-([a-z0-9])/g, (_, c: string) => c.toUpperCase());
 }
 
 function themeObject(t: Tokens, indent: string) {
@@ -75,6 +75,9 @@ export const CHAT_DESIGN = ${JSON.stringify(s.ai, null, 2)} as const;
 
 /** 하단 탭 · LNB 설정 — components/app/navigation.tsx, lnb.tsx 에서 읽어서 씀 */
 export const NAV_DESIGN = ${JSON.stringify(s.nav, null, 2)} as const;
+
+/** 캘린더 · 시간 잡기 · 수행 확인 설정 — components/app/calendar.tsx 에서 읽어서 씀 */
+export const CALENDAR_DESIGN = ${JSON.stringify(s.calendar, null, 2)} as const;
 
 export const NAV_THEME: Record<'light' | 'dark', Theme> = {
   light: {
@@ -154,7 +157,7 @@ ${block('dark')}
   }
 }
 
-/* 앱 전용 토큰 (카드 4종, AI 채팅) */
+/* 앱 전용 토큰 (카드 4종, AI 채팅, 캘린더 계정) */
 @theme {
   --color-event: ${t.event};
   --color-event-soft: ${t['event-soft']};
@@ -166,6 +169,10 @@ ${block('dark')}
   --color-idea-soft: ${t['idea-soft']};
   --color-ai: ${t.ai};
   --color-ai-soft: ${t['ai-soft']};
+  --color-cal-1: ${t['cal-1']};
+  --color-cal-1-soft: ${t['cal-1-soft']};
+  --color-cal-2: ${t['cal-2']};
+  --color-cal-2-soft: ${t['cal-2-soft']};
   --radius: ${rem(s.radius)};
 }
 `;

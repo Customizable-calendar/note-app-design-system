@@ -47,7 +47,7 @@ export function ScreensView({
 
   const panel = (
     <>
-      {(['기존 목업', '절충안 (새 화면)', 'LNB · 내비게이션'] as const).map((g) => (
+      {(['기존 목업', '절충안 (새 화면)', '캘린더 (새 화면)', 'LNB · 내비게이션'] as const).map((g) => (
         <PanelSection key={g} title={g}>
           <View className="gap-1">
             {SCREENS.filter((s) => s.group === g).map((s) => {

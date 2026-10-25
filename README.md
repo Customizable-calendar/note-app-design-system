@@ -24,11 +24,12 @@ npm run web        # http://localhost:8090
 |---|---|
 | 1. 테마 색 | 메인/서브 색을 RGB 슬라이더·HEX로 바꾸기, 프리셋, 회색 톤, 카드 4종 색, 모서리, 글꼴, 세부 토큰 직접 수정, 대비(WCAG) 검사 |
 | 2. 컴포넌트 | 컴포넌트별 구성요소 번호 표시, 각 부분이 쓰는 토큰, 종류·상태, 쓰이는 화면, 코드 |
-| 3. 내비게이션 · LNB | 하단 탭 3가지 구성 비교, LNB 드로어(휴대폰)·고정 사이드바(태블릿·웹), 여는 방법·선택 표시·구역, 메뉴 지도 |
-| 4. AI 채팅 | AI 강조색, 말풍선 색·모양, 아바타, 채팅 속 카드, 생각 중·오류·첫 화면 상태, 입력창 |
-| 5. 화면별 확인 | 목업 11개 + LNB 2개 화면을 라이트/다크로 나란히, 화면마다 확인할 디자인 요소 체크리스트 |
-| 6. 사용 시나리오 | 낮 메모 → 카드, 밤 초안, 회의 녹음, AI에게 묻기, 처음 설정 — 단계별 화면과 디자인 확인 포인트 |
-| 7. 코드 내보내기 | `global.css`, `lib/theme.ts`, `tailwind.config.js`, HeroUI Native 매핑, `design-tokens.json` |
+| 3. 내비게이션 · LNB | 하단 탭 4가지 구성 비교(캘린더 포함 5칸 추가), LNB 드로어(휴대폰)·고정 사이드바(태블릿·웹), 여는 방법·선택 표시·구역, 메뉴 지도 |
+| 4. 캘린더 | 캘린더 아이디어 채택안: 계정 색 2개, 일정 블록·AI 후보 모양, 시간 후보 표시, 수행 확인 버튼, 동기화 상태, 기능 화면 4개 |
+| 5. AI 채팅 | AI 강조색, 말풍선 색·모양, 아바타, 채팅 속 카드, 생각 중·오류·첫 화면 상태, 입력창 |
+| 6. 화면별 확인 | 목업 11개 + 캘린더 4개 + LNB 2개 화면, 화면마다 확인할 디자인 요소 체크리스트 |
+| 7. 사용 시나리오 | 낮 메모 → 카드, 밤 초안, 회의 녹음, AI에게 묻기, 일정 잡고 돌아보기, 처음 설정 — 단계별 화면과 디자인 확인 포인트 |
+| 8. 코드 내보내기 | `global.css`, `lib/theme.ts`, `tailwind.config.js`, HeroUI Native 매핑, `design-tokens.json` |
 
 - 오른쪽 위 **이 설정 링크 복사**: 지금 설정이 URL에 담겨서 팀원이 같은 화면으로 열 수 있어요.
 - `?tab=components&c=extracted`, `?tab=screens&screen=capture`, `?tab=scenarios&sc=draft` 처럼 탭·컴포넌트·화면을 링크로 바로 열 수 있어요.
@@ -39,7 +40,7 @@ npm run web        # http://localhost:8090
 ```
 app/                 페이지 진입점 (Expo Router)
 components/ui/       react-native-reusables 컴포넌트 (복사본, soft 버튼·글꼴만 추가)
-components/app/      앱 전용 컴포넌트: 카드 칩, AI 추출 카드, 탭바, LNB, 시트, 슬래시 메뉴…
+components/app/      앱 전용 컴포넌트: 카드 칩, AI 추출 카드, 탭바, LNB, 시트, 슬래시 메뉴, 캘린더(calendar.tsx)…
 components/chat/     AI 채팅 컴포넌트
 components/ds/       이 페이지 전용 (편집 패널, 휴대폰 틀, 구성요소 표시)
 screens/             목업 화면 재현 + 화면별 확인 포인트
@@ -54,7 +55,7 @@ design/              tailwind 색 이름 설정 (tailwind.config.js 와 내보�
 `components/ui`, `components/app`, `components/chat`, `lib/font.ts`는 앱으로 그대로 옮길 코드입니다.
 `components/ds`, `views`, `catalog`, `lib/design/store.tsx`는 이 페이지에서만 씁니다.
 
-1. 7번 탭에서 `global.css`, `lib/theme.ts` 복사
+1. 8번 탭에서 `global.css`, `lib/theme.ts` 복사
 2. `tailwind.config.js`의 colors · borderRadius 맞추기 (처음 한 번)
 3. 위 컴포넌트 폴더 복사
 4. `design-tokens.json`을 docs에 커밋 (나중에 이 페이지에서 다시 불러와 이어서 수정)

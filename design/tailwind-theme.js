@@ -38,6 +38,13 @@ const colors = {
     'ai-foreground': c('bubble-ai-foreground'),
     'ai-border': c('bubble-ai-border'),
   },
+  // 캘린더: 연결한 계정 색
+  cal: {
+    1: c('cal-1'),
+    '1-soft': c('cal-1-soft'),
+    2: c('cal-2'),
+    '2-soft': c('cal-2-soft'),
+  },
 };
 
 const borderRadius = {

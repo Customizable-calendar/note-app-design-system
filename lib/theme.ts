@@ -41,6 +41,10 @@ export const THEME = {
     bubbleAi: 'hsl(192.9 35% 92.2%)',
     bubbleAiForeground: 'hsl(210 16% 9.8%)',
     bubbleAiBorder: 'hsl(192.9 35% 92.2%)',
+    cal1: 'hsl(218.1 67.3% 43.1%)',
+    cal1Soft: 'hsl(216 51.7% 94.3%)',
+    cal2: 'hsl(330.8 50.2% 42.5%)',
+    cal2Soft: 'hsl(332.7 37.9% 94.3%)',
     radius: '0.875rem',
   },
   dark: {
@@ -83,6 +87,10 @@ export const THEME = {
     bubbleAi: 'hsl(196.8 28.7% 17.1%)',
     bubbleAiForeground: 'hsl(202.5 21.1% 92.5%)',
     bubbleAiBorder: 'hsl(196.8 28.7% 17.1%)',
+    cal1: 'hsl(218.1 51.4% 71.8%)',
+    cal1Soft: 'hsl(214.9 51.8% 16.3%)',
+    cal2: 'hsl(331.1 37% 71.4%)',
+    cal2Soft: 'hsl(320.9 28.4% 15.9%)',
     radius: '0.875rem',
   },
 };
@@ -103,6 +111,31 @@ export const CHAT_DESIGN = {
   "composer": "pill",
   "showSources": true,
   "showCost": true
+} as const;
+
+/** 하단 탭 · LNB 설정 — components/app/navigation.tsx, lnb.tsx 에서 읽어서 씀 */
+export const NAV_DESIGN = {
+  "tabs": "lnb4",
+  "open": "avatar",
+  "selected": "soft",
+  "density": "regular",
+  "showQuick": true,
+  "showCards": true,
+  "showUsage": true
+} as const;
+
+/** 캘린더 · 시간 잡기 · 수행 확인 설정 — components/app/calendar.tsx 에서 읽어서 씀 */
+export const CALENDAR_DESIGN = {
+  "accounts": [
+    "#245ab8",
+    "#a3366b"
+  ],
+  "eventStyle": "bar",
+  "suggestion": "dashed",
+  "fitLabel": "word",
+  "showReasons": true,
+  "density": "regular",
+  "statusStyle": "segment"
 } as const;
 
 export const NAV_THEME: Record<'light' | 'dark', Theme> = {

@@ -34,14 +34,16 @@ export function ComponentsView({
           onChange={(v) => set({ mode: v ? 'dark' : 'light' })}
         />
       </PanelSection>
-      {(['reusables', '앱 전용'] as const).map((src) => (
+      {(['reusables', '앱 전용', '캘린더'] as const).map((src) => (
         <PanelSection
           key={src}
-          title={src === 'reusables' ? 'react-native-reusables' : '앱 전용 컴포넌트'}
+          title={src === 'reusables' ? 'react-native-reusables' : src === '캘린더' ? '캘린더 컴포넌트' : '앱 전용 컴포넌트'}
           hint={
             src === 'reusables'
               ? 'components/ui · 라이브러리 코드를 복사해서 토큰만 입힌 것'
-              : 'components/app · 우리 앱 화면에서 뽑아낸 조합 컴포넌트'
+              : src === '캘린더'
+                ? 'components/app/calendar.tsx · 캘린더 아이디어 채택안 (4번 탭에서 설정)'
+                : 'components/app · 우리 앱 화면에서 뽑아낸 조합 컴포넌트'
           }>
           <View className="gap-1">
             {COMPONENTS.filter((c) => c.source === src).map((c) => (
@@ -65,8 +67,8 @@ export function ComponentsView({
       <View className="gap-2">
         <View className="flex-row flex-wrap items-center gap-2">
           <Text className="text-2xl font-bold text-slate-900">{spec.name}</Text>
-          <View className={cn('rounded-full px-2.5 py-1', spec.source === 'reusables' ? 'bg-sky-100' : 'bg-violet-100')}>
-            <Text className={cn('text-[11px] font-bold', spec.source === 'reusables' ? 'text-sky-800' : 'text-violet-800')}>
+          <View className={cn('rounded-full px-2.5 py-1', spec.source === 'reusables' ? 'bg-sky-100' : spec.source === '캘린더' ? 'bg-amber-100' : 'bg-violet-100')}>
+            <Text className={cn('text-[11px] font-bold', spec.source === 'reusables' ? 'text-sky-800' : spec.source === '캘린더' ? 'text-amber-800' : 'text-violet-800')}>
               {spec.source}
             </Text>
           </View>

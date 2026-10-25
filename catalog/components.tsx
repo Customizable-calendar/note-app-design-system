@@ -1,3 +1,13 @@
+import {
+  AccountChip,
+  CheckItem,
+  CompletionBar,
+  DayTimeline,
+  EventBlock,
+  SlotOption,
+  StatusPicker,
+  SyncBanner,
+} from '@/components/app/calendar';
 import { ExtractedCard, ScheduleRow, SourceChip, TypeChip } from '@/components/app/cards';
 import { Fab, FilterChips, SegmentTabs, TabBar, TopBar } from '@/components/app/navigation';
 import { Lnb, LnbItem, LnbProfile, LnbSection, UsageMeter } from '@/components/app/lnb';
@@ -34,7 +44,7 @@ import { View } from 'react-native';
 export type ComponentSpec = {
   id: string;
   name: string;
-  source: 'reusables' | '앱 전용';
+  source: 'reusables' | '앱 전용' | '캘린더';
   file: string;
   desc: string;
   /** 구성요소 번호가 붙는 해부도 */
@@ -777,5 +787,174 @@ export const COMPONENTS: ComponentSpec[] = [
       </View>
     ),
     code: `<Toast message="카드 3장을 저장했어요" action="되돌리기" />`,
+  },
+  {
+    id: 'cal-event',
+    name: '일정 블록 · 계정 칩',
+    source: '캘린더',
+    file: 'components/app/calendar.tsx',
+    desc: '연결한 캘린더 계정마다 색 하나(cal-1, cal-2). 계정 칩을 눌러 보기/숨기기. 계정이 없는 블록은 AI 후보라서 AI 색 + 점선(또는 연한 면)으로, 저장 전이라는 게 보여야 함.',
+    Anatomy: ({ show }) => (
+      <View className="w-[300px] gap-3">
+        <Part n={1} show={show} className="self-start">
+          <AccountChip account={1} label="회사 Google" />
+        </Part>
+        <Part n={2} show={show}>
+          <EventBlock account={1} title="주간 회의" meta="09:00–10:00 · 회사" />
+        </Part>
+        <Part n={3} show={show}>
+          <EventBlock title="제안서 초안 · 후보" meta="10:00–12:00 · 아직 저장 안 됨" />
+        </Part>
+      </View>
+    ),
+    parts: [
+      { name: '계정 칩', cls: 'bg-cal-1-soft · 점 bg-cal-1 · 글자 text-cal-1', note: '꺼지면 테두리 + 취소선' },
+      { name: '일정 블록', cls: 'bar: bg-cal-1-soft + border-l-cal-1 / fill: bg-cal-1 + text-background', note: '4번 탭에서 전환' },
+      { name: 'AI 후보 블록', cls: 'border-dashed border-ai · bg-ai-soft/40 · text-ai', note: '저장하면 계정 색 블록으로 바뀜' },
+    ],
+    Variants: () => (
+      <View className="gap-4">
+        <Row>
+          <AccountChip account={1} label="회사 Google" />
+          <AccountChip account={2} label="개인 Google" />
+          <AccountChip account={2} label="개인 Google" off />
+        </Row>
+        <View className="w-[320px]">
+          <DayTimeline
+            from={9}
+            to={12}
+            events={[
+              { account: 1, title: '주간 회의', meta: '09:00–10:00', start: 9, end: 10 },
+              { title: '후보', meta: '10:00–11:00', start: 10, end: 11 },
+              { account: 2, title: '점심 · 민수', meta: '11:00–12:00', start: 11, end: 12 },
+            ]}
+          />
+        </View>
+      </View>
+    ),
+    code: `<AccountChip account={1} label="회사 Google" off={hidden} onPress={toggle} />
+<EventBlock account={1} title="주간 회의" meta="09:00–10:00 · 회사" />
+<EventBlock title="제안서 초안 · 후보" meta="아직 저장 안 됨" /> // account 없음 = AI 후보
+<DayTimeline from={9} to={15} events={events} /> // 1시간 높이는 CALENDAR_DESIGN.density`,
+  },
+  {
+    id: 'cal-sync',
+    name: '동기화 상태',
+    source: '캘린더',
+    file: 'components/app/calendar.tsx',
+    desc: '외부 캘린더는 늦게 반영되거나 실패할 수 있어서 상태를 숨기지 않음. 문제가 있을 때만 서브(경고) 색, 나머지는 회색. 오류 빨강은 쓰지 않음.',
+    Anatomy: ({ show }) => (
+      <Part n={1} show={show} className="w-[320px]">
+        <View className="flex-row items-center gap-2 rounded-lg bg-secondary-soft px-3 py-2">
+          <Part n={2} show={show} inset={-2}>
+            <Text className="text-xs text-secondary-soft-foreground">⚠</Text>
+          </Part>
+          <Part n={3} show={show} className="flex-1" inset={-2}>
+            <Text className="text-xs text-secondary-soft-foreground">회사 계정에 다시 로그인해야 해요</Text>
+          </Part>
+          <Part n={4} show={show} inset={-2}>
+            <Text className="text-xs font-bold text-secondary-soft-foreground">로그인</Text>
+          </Part>
+        </View>
+      </Part>
+    ),
+    parts: [
+      { name: '면', cls: '정상 bg-muted · 문제 bg-secondary-soft · 저장 대기 bg-primary-soft' },
+      { name: '아이콘', cls: 'size 14 · 글자와 같은 색' },
+      { name: '문구', cls: 'text-xs · 무엇이 문제인지 한 줄' },
+      { name: '행동 (선택)', cls: 'text-xs font-bold · 다시 시도 / 로그인 / 보기' },
+    ],
+    Variants: () => (
+      <View className="w-[340px] gap-2">
+        <SyncBanner state="ok" />
+        <SyncBanner state="syncing" />
+        <SyncBanner state="pending" />
+        <SyncBanner state="partial" />
+        <SyncBanner state="reauth" />
+      </View>
+    ),
+    code: `<SyncBanner state="reauth" />
+// state: ok | syncing | pending(외부 저장 대기) | partial(일부 실패) | reauth(재로그인)`,
+  },
+  {
+    id: 'cal-slot',
+    name: '시간 후보',
+    source: '캘린더',
+    file: 'components/app/calendar.tsx',
+    desc: '할 일 카드에 맞는 시간을 최대 3개 제안. 고른 것만 저장되고, 저장 직전에 충돌을 다시 확인. 잘 맞는 정도는 글자 · 점수 · 없음 중에서 정함 (4번 탭).',
+    Anatomy: ({ show }) => (
+      <Part n={1} show={show} className="w-[320px]">
+        <View className="flex-row gap-3 rounded-lg border-2 border-primary bg-primary-soft/40 px-3.5 py-3">
+          <Part n={2} show={show} className="self-start" inset={-2}>
+            <View className="mt-0.5 h-[18px] w-[18px] items-center justify-center rounded-full border-2 border-primary">
+              <View className="h-2 w-2 rounded-full bg-primary" />
+            </View>
+          </Part>
+          <View className="flex-1 gap-1">
+            <View className="flex-row items-center justify-between">
+              <Part n={3} show={show} inset={-2}>
+                <Text className="text-[15px] font-bold text-card-foreground">목 10:00 – 12:00</Text>
+              </Part>
+              <Part n={4} show={show} inset={-2}>
+                <View className="rounded-full bg-primary-soft px-2 py-0.5">
+                  <Text className="text-[11px] font-bold text-primary-soft-foreground">잘 맞음</Text>
+                </View>
+              </Part>
+            </View>
+            <Part n={5} show={show} inset={-2}>
+              <Text className="text-xs text-muted-foreground">회의 사이 빈 시간 · 오전 작업 8번 중 6번 완료</Text>
+            </Part>
+          </View>
+        </View>
+      </Part>
+    ),
+    parts: [
+      { name: '컨테이너', cls: '고름: border-2 border-primary · bg-primary-soft/40 / 안 고름: border-border' },
+      { name: '라디오', cls: '18px · border-primary' },
+      { name: '시간', cls: 'text-[15px] font-bold' },
+      { name: '잘 맞는 정도', cls: '잘 맞음 primary-soft · 보통 muted · 여유 적음 secondary-soft', note: '점수 0–100도 가능' },
+      { name: '이유', cls: 'text-xs muted-foreground · 실제 기록이 근거일 때만 숫자' },
+    ],
+    Variants: () => (
+      <View className="w-[340px] gap-2">
+        <SlotOption time="목 10:00 – 12:00" fit="good" score={86} reason="회의 사이 빈 시간" selected />
+        <SlotOption time="목 15:15 – 17:15" fit="ok" score={64} reason="리뷰 뒤 15분 여유 포함" />
+        <SlotOption time="금 09:00 – 11:00" fit="tight" score={41} reason="마감 당일이라 여유가 없어요" />
+      </View>
+    ),
+    code: `<SlotOption time="목 10:00 – 12:00" fit="good" score={86}
+  reason="회의 사이 빈 시간" selected={picked === 0} onPress={() => setPicked(0)} />
+// fit: good | ok | tight · 표시 방식은 CALENDAR_DESIGN.fitLabel (word | score | none)`,
+  },
+  {
+    id: 'cal-status',
+    name: '수행 확인 · 회고 막대',
+    source: '캘린더',
+    file: 'components/app/calendar.tsx',
+    desc: '저녁에 오늘 일정을 완료 · 부분 · 못 함 · 모름으로 체크. 못 함은 실패가 아니라 기록이므로 오류 빨강 대신 서브 연한 면. 부분 · 못 함이면 한 번 더 짧게 묻고, 결과는 업무일지 초안과 주간 회고로 감.',
+    Anatomy: ({ show }) => (
+      <View className="w-[340px] gap-3">
+        <Part n={1} show={show}>
+          <StatusPicker value="partial" />
+        </Part>
+        <Part n={2} show={show}>
+          <CompletionBar done={9} partial={3} missed={2} />
+        </Part>
+      </View>
+    ),
+    parts: [
+      { name: '상태 버튼 4개', cls: '완료 bg-primary · 부분 bg-primary-soft · 못 함 bg-secondary-soft · 모름 bg-muted', note: '칸 나눔 / 칩 (4번 탭)' },
+      { name: '비율 막대', cls: 'bg-primary · bg-primary/40 · bg-secondary/60', note: '버튼과 같은 색 규칙' },
+    ],
+    Variants: () => (
+      <View className="w-[340px] gap-4">
+        <CheckItem title="제안서 초안 작성" meta="10:00 · 할 일" initial="partial" initialFollow="절반쯤" />
+        <CheckItem title="API 연동 테스트" meta="16:00 · 할 일" initial="missed" />
+        <CheckItem title="디자인 리뷰" meta="14:00 · 일정" />
+      </View>
+    ),
+    code: `<CheckItem title="제안서 초안 작성" meta="10:00 · 할 일" initial="partial" />
+<StatusPicker value={status} onChange={setStatus} /> // done | partial | missed | unknown
+<CompletionBar done={9} partial={3} missed={2} />`,
   },
 ];
