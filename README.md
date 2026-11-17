@@ -27,7 +27,7 @@ npm run web        # http://localhost:8090
 | 3. 내비게이션 · LNB | 하단 탭 4가지 구성 비교(캘린더 포함 5칸 추가), LNB 드로어(휴대폰)·고정 사이드바(태블릿·웹), 여는 방법·선택 표시·구역, 메뉴 지도 |
 | 4. 캘린더 | 캘린더 아이디어 채택안: 계정 색 2개, 일정 블록·AI 후보 모양, 시간 후보 표시, 수행 확인 버튼, 동기화 상태, 기능 화면 4개 |
 | 5. AI 채팅 | AI 강조색, 말풍선 색·모양, 아바타, 채팅 속 카드, 생각 중·오류·첫 화면 상태, 입력창 |
-| 6. 화면별 확인 | 목업 11개 + 캘린더 4개 + LNB 2개 화면, 화면마다 확인할 디자인 요소 체크리스트 |
+| 6. 화면별 확인 | 개편안 20개 + 벤치마크 반영 8개 + LNB 2개 화면, 화면마다 확인할 디자인 요소 체크리스트 |
 | 7. 사용 시나리오 | 낮 메모 → 카드, 밤 초안, 회의 녹음, AI에게 묻기, 일정 잡고 돌아보기, 처음 설정 — 단계별 화면과 디자인 확인 포인트 |
 | 8. 코드 내보내기 | `global.css`, `lib/theme.ts`, `tailwind.config.js`, HeroUI Native 매핑, `design-tokens.json` |
 
@@ -40,12 +40,13 @@ npm run web        # http://localhost:8090
 ```
 app/                 페이지 진입점 (Expo Router)
 components/ui/       react-native-reusables 컴포넌트 (복사본, soft 버튼·글꼴만 추가)
-components/app/      앱 전용 컴포넌트: 카드 칩, AI 추출 카드, 탭바, LNB, 시트, 슬래시 메뉴, 캘린더(calendar.tsx)…
+components/app/      앱 전용 컴포넌트: 카드 줄(cards.tsx), 홈(home.tsx), 탭바와 빠른 도구(navigation.tsx), LNB, 펼치는 목록(tree.tsx), 문서 도구(doc.tsx), 시트, 캘린더(calendar.tsx), 녹음과 요약(record.tsx)
 components/chat/     AI 채팅 컴포넌트
 components/ds/       이 페이지 전용 (편집 패널, 휴대폰 틀, 구성요소 표시)
 screens/             목업 화면 재현 + 화면별 확인 포인트
 catalog/             컴포넌트 설명·구성요소·코드 예시, 사용 시나리오
 views/               탭별 화면
+docs/                벤치마크(benchmark/), 화면 개편 방향(redesign.md), 색 고른 방법(colors.md)
 lib/design/          토큰 계산(tokens.ts), 색 계산(color.ts), 내보내기(export.ts), 상태 저장(store.tsx)
 design/              tailwind 색 이름 설정 (tailwind.config.js 와 내보내기가 같이 씀)
 ```
@@ -64,6 +65,7 @@ design/              tailwind 색 이름 설정 (tailwind.config.js 와 내보�
 
 ## 참고
 
-- 기본 색은 기존 `앱 목업.html`에서 뽑았어요 (메인 `#0b6b8a`, 서브 `#b5470b`).
+- 기본 색은 보라 메인 `#6247c9`에 맞춰 서브와 카드 4색을 색약 구분 계산으로 골랐어요 ([docs/colors.md](docs/colors.md)). 처음 목업의 틸 색은 1번 탭 「예전 틸」 프리셋에 남아 있어요.
+- 화면 구조는 클로바노트, 네이버 캘린더, personal-memo 를 참고했어요 ([docs/benchmark/README.md](docs/benchmark/README.md), [docs/redesign.md](docs/redesign.md)).
 - 글꼴: Pretendard (SIL OFL 1.1), Noto Sans KR (SIL OFL 1.1). 웹에서는 CDN으로 불러오고, 앱에서는 expo-font로 넣어야 합니다.
 - HeroUI Native(Apache-2.0) 매핑은 [공식 테마 문서](https://heroui.com/docs/native/getting-started/theming) 기준이며, 설치 버전의 `variables.css`와 대조가 필요합니다.

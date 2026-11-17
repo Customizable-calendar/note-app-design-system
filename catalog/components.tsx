@@ -1,17 +1,18 @@
 import {
   AccountChip,
-  CheckItem,
-  CompletionBar,
   DayTimeline,
   EventBlock,
   SlotOption,
   StatusPicker,
+  TaskCheckRow,
   SyncBanner,
 } from '@/components/app/calendar';
-import { ExtractedCard, ScheduleRow, SourceChip, TypeChip } from '@/components/app/cards';
-import { Fab, FilterChips, SegmentTabs, TabBar, TopBar } from '@/components/app/navigation';
+import { SourceChip, TypeChip } from '@/components/app/cards';
+import { Fab, SegmentTabs, TabBar, TopBar } from '@/components/app/navigation';
 import { Lnb, LnbItem, LnbProfile, LnbSection, UsageMeter } from '@/components/app/lnb';
 import { BottomSheet, SlashMenu, Toast } from '@/components/app/overlays';
+import { BENCHMARK_COMPONENTS } from '@/catalog/benchmark';
+import { REDESIGN_COMPONENTS } from '@/catalog/redesign';
 import { Part } from '@/components/ds/frame';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -180,71 +181,6 @@ export const COMPONENTS: ComponentSpec[] = [
 <SourceChip label="메모" />`,
   },
   {
-    id: 'extracted',
-    name: 'AI 추출 카드',
-    source: '앱 전용',
-    file: 'components/app/cards.tsx',
-    desc: '절충안의 핵심 컴포넌트. AI 결과는 제안(점선)으로만 보여주고, 사람이 확인해야 저장(실선).',
-    Anatomy: ({ show }) => (
-      <Part n={1} show={show} className="w-[320px]">
-        <View className="gap-1.5 rounded-lg border-[1.5px] border-dashed border-primary/40 bg-primary-soft/40 px-3.5 py-3">
-          <View className="flex-row items-center justify-between">
-            <Part n={2} show={show}>
-              <TypeChip type="event" />
-            </Part>
-            <Part n={3} show={show}>
-              <SourceChip label="메모" />
-            </Part>
-          </View>
-          <Part n={4} show={show} className="self-start">
-            <Text className="text-[15px] font-bold text-card-foreground">기획 회의</Text>
-          </Part>
-          <Part n={5} show={show} className="self-start">
-            <Text className="text-xs text-muted-foreground">내일 15:00 · 강남 · 민수</Text>
-          </Part>
-          <Part n={6} show={show} className="mt-1 self-start">
-            <View className="flex-row gap-2">
-              <Button size="sm" className="h-8 px-3">
-                <Text className="text-[13px]">확인</Text>
-              </Button>
-              <Button size="sm" variant="outline" className="h-8 px-3">
-                <Text className="text-[13px]">고치기</Text>
-              </Button>
-              <Button size="sm" variant="outline" className="h-8 px-3">
-                <Text className="text-[13px]">버리기</Text>
-              </Button>
-            </View>
-          </Part>
-        </View>
-      </Part>
-    ),
-    parts: [
-      { name: '컨테이너', cls: 'border-dashed border-primary/40 · bg-primary-soft/40 · rounded-lg', note: '확정되면 실선 border-border + bg-card' },
-      { name: '종류 칩', cls: 'TypeChip' },
-      { name: '출처 칩', cls: 'SourceChip — 원문 출처를 항상 표시' },
-      { name: '제목', cls: 'text-[15px] font-bold' },
-      { name: '메타', cls: 'text-xs text-muted-foreground — 날짜·장소·사람' },
-      { name: '행동 버튼', cls: 'Button sm: 확인(default) · 고치기/버리기(outline)' },
-    ],
-    Variants: () => (
-      <View className="w-[320px] gap-2.5">
-        <Caption>suggested · 제안</Caption>
-        <ExtractedCard type="task" title="견적서 보내기" meta="기획 회의 전에" />
-        <Caption>confirmed · 확정</Caption>
-        <ExtractedCard type="task" title="견적서 보내기" meta="기획 회의 전에" state="confirmed" />
-        <Caption>dismissed · 버림</Caption>
-        <ExtractedCard type="task" title="견적서 보내기" state="dismissed" />
-      </View>
-    ),
-    code: `<ExtractedCard
-  type="event"
-  title="기획 회의"
-  meta="내일 15:00 · 강남 · 민수"
-  source="메모"
-  state="suggested"   // suggested | confirmed | dismissed
-/>`,
-  },
-  {
     id: 'card',
     name: '카드 (기본)',
     source: 'reusables',
@@ -277,8 +213,12 @@ export const COMPONENTS: ComponentSpec[] = [
     ],
     Variants: () => (
       <View className="w-[320px] gap-2.5">
-        <ScheduleRow time="10:00" title="자료구조 수업" meta="노트: 자료구조 7주차" />
-        <ScheduleRow time="15:00" title="팀 회의" meta="Google 캘린더" metaTone="external" />
+        <Card>
+          <CardHeader>
+            <CardTitle>회의록</CardTitle>
+            <CardDescription>문서 7</CardDescription>
+          </CardHeader>
+        </Card>
       </View>
     ),
     code: `<Card>
@@ -288,46 +228,6 @@ export const COMPONENTS: ComponentSpec[] = [
   </CardHeader>
   <CardContent>…</CardContent>
 </Card>`,
-  },
-  {
-    id: 'schedule',
-    name: '일정 행',
-    source: '앱 전용',
-    file: 'components/app/cards.tsx',
-    desc: '홈의 오늘 일정. 시간 열 너비를 고정해서 세로 정렬을 맞춤. 외부 캘린더 출처는 서브 색 점.',
-    Anatomy: ({ show }) => (
-      <Part n={1} show={show} className="w-[320px]">
-        <View className="flex-row items-center gap-4 rounded-lg border border-border bg-card px-4 py-3.5">
-          <Part n={2} show={show}>
-            <Text className="w-12 text-[15px] font-bold">15:00</Text>
-          </Part>
-          <View className="flex-1 gap-0.5">
-            <Part n={3} show={show} className="self-start">
-              <Text className="text-[15px] font-semibold">팀 회의</Text>
-            </Part>
-            <Part n={4} show={show} className="self-start">
-              <View className="flex-row items-center gap-1.5">
-                <View className="h-2 w-2 rounded-full bg-secondary" />
-                <Text className="text-xs text-secondary">Google 캘린더</Text>
-              </View>
-            </Part>
-          </View>
-        </View>
-      </Part>
-    ),
-    parts: [
-      { name: '컨테이너', cls: 'border-border · bg-card · rounded-lg' },
-      { name: '시간', cls: 'w-12 · text-[15px] font-bold' },
-      { name: '제목', cls: 'text-[15px] font-semibold' },
-      { name: '출처', cls: 'muted 글자 또는 서브 색 점 + 글자(외부 캘린더)' },
-    ],
-    Variants: () => (
-      <View className="w-[320px] gap-2.5">
-        <ScheduleRow time="10:00" title="자료구조 수업" meta="노트: 자료구조 7주차" />
-        <ScheduleRow time="23:59" title="과제 마감" meta="노트: 자료구조 7주차" badge="D-7" />
-      </View>
-    ),
-    code: `<ScheduleRow time="15:00" title="팀 회의" meta="Google 캘린더" metaTone="external" />`,
   },
   {
     id: 'input',
@@ -396,29 +296,6 @@ export const COMPONENTS: ComponentSpec[] = [
       </Row>
     ),
     code: `<Badge variant="outline"><Text>AI 초안</Text></Badge>`,
-  },
-  {
-    id: 'filter',
-    name: '필터 칩',
-    source: '앱 전용',
-    file: 'components/app/navigation.tsx',
-    desc: '피드·오늘 카드 상단. 선택 칩은 글자색으로 채워서 확실하게.',
-    Anatomy: ({ show }) => (
-      <Row>
-        <Part n={1} show={show}>
-          <FilterChips items={['전체']} active="전체" />
-        </Part>
-        <Part n={2} show={show}>
-          <FilterChips items={['블로그']} active="" />
-        </Part>
-      </Row>
-    ),
-    parts: [
-      { name: '선택됨', cls: 'bg-foreground · text-background · font-bold' },
-      { name: '기본', cls: 'border-border · bg-background · h-9 rounded-full px-4' },
-    ],
-    Variants: () => <FilterChips items={['전체 9', '일정', '할 일', '사람', '아이디어']} active="일정" />,
-    code: `<FilterChips items={['전체', '블로그', '업무일지']} active="전체" onChange={setFilter} />`,
   },
   {
     id: 'segment',
@@ -576,7 +453,7 @@ export const COMPONENTS: ComponentSpec[] = [
     name: '떠 있는 버튼',
     source: '앱 전용',
     file: 'components/app/navigation.tsx',
-    desc: '홈의 AI(주) · 녹음(보조). 주 버튼만 채움.',
+    desc: '화면에 하나만 두는 떠 있는 버튼(캘린더의 더하기 등). 홈의 녹음과 AI는 빠른 도구(speed-dial)로 묶었어요.',
     Anatomy: ({ show }) => (
       <Row>
         <Part n={1} show={show}>
@@ -928,33 +805,34 @@ export const COMPONENTS: ComponentSpec[] = [
   },
   {
     id: 'cal-status',
-    name: '수행 확인 · 회고 막대',
+    name: '수행 확인 4가지',
     source: '캘린더',
     file: 'components/app/calendar.tsx',
-    desc: '저녁에 오늘 일정을 완료 · 부분 · 못 함 · 모름으로 체크. 못 함은 실패가 아니라 기록이므로 오류 빨강 대신 서브 연한 면. 부분 · 못 함이면 한 번 더 짧게 묻고, 결과는 업무일지 초안과 주간 회고로 감.',
+    desc: '저녁에 오늘 일을 완료, 부분, 못 함, 모름으로 체크해요. 대부분은 줄의 동그라미 한 번으로 끝나고, 줄을 누르면 4가지가 펼쳐져요. 못 함은 실패가 아니라 기록이라서 오류 빨강 대신 서브 색을 써요.',
     Anatomy: ({ show }) => (
       <View className="w-[340px] gap-3">
         <Part n={1} show={show}>
-          <StatusPicker value="partial" />
+          <TaskCheckRow flat title="API 연동 테스트" meta="16:00" status="missed" />
         </Part>
         <Part n={2} show={show}>
-          <CompletionBar done={9} partial={3} missed={2} />
+          <StatusPicker value="missed" />
         </Part>
       </View>
     ),
     parts: [
-      { name: '상태 버튼 4개', cls: '완료 bg-primary · 부분 bg-primary-soft · 못 함 bg-secondary-soft · 모름 bg-muted', note: '칸 나눔 / 칩 (4번 탭)' },
-      { name: '비율 막대', cls: 'bg-primary · bg-primary/40 · bg-secondary/60', note: '버튼과 같은 색 규칙' },
+      { name: '할 일 줄', cls: '동그라미 24, 고른 상태는 오른쪽 글자(부분 text-primary, 못 함 text-secondary, 모름 회색)' },
+      { name: '상태 버튼 4개', cls: '완료 bg-primary, 부분 bg-primary-soft, 못 함 bg-secondary-soft, 모름 bg-muted', note: '칸 나눔 / 칩 (4번 탭)' },
     ],
     Variants: () => (
-      <View className="w-[340px] gap-4">
-        <CheckItem title="제안서 초안 작성" meta="10:00 · 할 일" initial="partial" initialFollow="절반쯤" />
-        <CheckItem title="API 연동 테스트" meta="16:00 · 할 일" initial="missed" />
-        <CheckItem title="디자인 리뷰" meta="14:00 · 일정" />
+      <View className="w-[340px]">
+        <TaskCheckRow flat title="기획 회의" meta="14:00" status="done" />
+        <TaskCheckRow flat title="제안서 초안 작성" meta="10:00, 1시간 더 필요" status="partial" />
+        <TaskCheckRow flat title="디자인 리뷰" meta="17:00" />
       </View>
     ),
-    code: `<CheckItem title="제안서 초안 작성" meta="10:00 · 할 일" initial="partial" />
-<StatusPicker value={status} onChange={setStatus} /> // done | partial | missed | unknown
-<CompletionBar done={9} partial={3} missed={2} />`,
+    code: `<TaskCheckRow flat title="API 연동 테스트" meta="16:00" status={status} onToggle={toggleDone} onPress={openPicker} />
+<StatusPicker value={status} onChange={setStatus} /> // done | partial | missed | unknown`,
   },
+  ...BENCHMARK_COMPONENTS,
+  ...REDESIGN_COMPONENTS,
 ];

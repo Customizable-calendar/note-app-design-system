@@ -7,7 +7,7 @@ import { useDesign } from '@/lib/design/store';
 import type { NavDesign, TabLayout } from '@/lib/design/tokens';
 import { cn } from '@/lib/utils';
 import { DrawerScreen, TabletHomeScreen } from '@/screens/navigation';
-import { HomeScreen } from '@/screens/tabs';
+import { HomeScreen } from '@/screens/redesign';
 import { MainSection, Sheet, Workspace } from '@/views/workspace';
 import * as React from 'react';
 import { Pressable, View } from 'react-native';
