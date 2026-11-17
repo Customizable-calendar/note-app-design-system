@@ -14,7 +14,7 @@ import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
 import { useDesign } from '@/lib/design/store';
 import type { AiDesign } from '@/lib/design/tokens';
-import { ChatScreen } from '@/screens/flows';
+import { ChatScreen } from '@/screens/redesign2';
 import { MainSection, Sheet, Workspace } from '@/views/workspace';
 import { SparklesIcon } from 'lucide-react-native';
 import * as React from 'react';
@@ -137,7 +137,7 @@ const ELEMENTS = [
   ['내 말풍선', 'bubble-user · 오른쪽 정렬 · 최대 80%'],
   ['AI 아바타', 'ai-soft 원 + ai 아이콘'],
   ['AI 말풍선', 'bubble-ai · 연한 면/테두리/없음'],
-  ['채팅 속 카드', 'ExtractedCard 재사용 → 빠른 입력 화면과 같은 모양'],
+  ['채팅 속 카드', 'CardListRow 재사용. 오늘 카드와 같은 줄 모양'],
   ['출처', 'border-border 작은 칩 · 원문 보존 원칙'],
   ['다음 행동 제안', 'ai-soft 칩 또는 목록'],
   ['생각 중', '점 3개 / 문구 / 빈 줄'],

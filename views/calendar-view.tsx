@@ -7,7 +7,9 @@ import { contrast, contrastGrade } from '@/lib/design/color';
 import { useDesign } from '@/lib/design/store';
 import { buildTokens, type CalendarDesign } from '@/lib/design/tokens';
 import { cn } from '@/lib/utils';
-import { CalendarScreen, CheckInScreen, ReviewScreen, SlotScreen } from '@/screens/calendar';
+import { CalendarDualScreen } from '@/screens/benchmark';
+import { CheckInScreen, SlotScreen } from '@/screens/redesign2';
+import { ReviewScreen } from '@/screens/redesign';
 import { MainSection, Sheet, Workspace } from '@/views/workspace';
 import * as React from 'react';
 import { View } from 'react-native';
@@ -122,8 +124,8 @@ const ELEMENTS = [
   ['날짜 줄', 'WeekStrip · 선택 bg-primary · 점 = 계정'],
   ['동기화 상태', 'SyncBanner · ok / syncing / pending / partial / reauth'],
   ['시간 후보', 'SlotOption · 라디오 · 잘 맞는 정도 · 이유'],
-  ['수행 확인', 'StatusPicker · CheckItem(부분·못 함이면 한 번 더 묻기)'],
-  ['회고 숫자', 'StatTile · CompletionBar(버튼과 같은 색 규칙)'],
+  ['수행 확인', 'TaskCheckRow(동그라미로 완료)와 StatusPicker(줄을 누르면 4가지)'],
+  ['회고', 'WeekMarks, MonthMarks(하루를 동그라미 하나로)'],
 ];
 
 export function CalendarView() {
@@ -138,8 +140,8 @@ export function CalendarView() {
       </Sheet>
       <MainSection title="기능 화면 4개" hint="캘린더 → 시간 잡기 → 수행 확인 → 주간 회고. 화면 안의 버튼 · 칩은 눌러 볼 수 있어요">
         <View className="flex-row flex-wrap gap-8">
-          <Phone label="캘린더 (일 · 주 · 목록)">
-            <CalendarScreen />
+          <Phone label="캘린더">
+            <CalendarDualScreen />
           </Phone>
           <Phone label="시간 잡기">
             <SlotScreen />
