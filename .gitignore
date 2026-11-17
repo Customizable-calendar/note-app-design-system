@@ -39,3 +39,5 @@ yarn-error.*
 
 expo-env.d.ts
 # @end expo-cli
+# 벤치마크 원본 보고서 (공개 레포에 올리지 않아요)
+docs/benchmark/raw/
